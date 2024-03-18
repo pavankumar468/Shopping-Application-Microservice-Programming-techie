@@ -1,11 +1,14 @@
 package com.shoppingapp.productservice.controller;
 
 import com.shoppingapp.productservice.dto.ProductRequest;
+import com.shoppingapp.productservice.dto.ProductResponse;
 import com.shoppingapp.productservice.model.Product;
 import com.shoppingapp.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.*;
 
 import java.math.BigDecimal;
 
@@ -21,10 +24,10 @@ public class ProductController {
         productService.createProduct(productRequest);
     }
 
+    @GetMapping("/viewAllProducts")
+    public ResponseEntity<List<ProductResponse>> viewAllProducts(){
 
-    @GetMapping("/read")
-    public String func(){
-        return "hello pavan";
+        return new ResponseEntity<>(productService.viewAllProducts(), HttpStatus.OK);
     }
 
 }

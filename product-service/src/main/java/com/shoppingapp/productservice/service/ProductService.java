@@ -1,6 +1,7 @@
 package com.shoppingapp.productservice.service;
 
 import com.shoppingapp.productservice.dto.ProductRequest;
+import com.shoppingapp.productservice.dto.ProductResponse;
 import com.shoppingapp.productservice.model.Product;
 import com.shoppingapp.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,9 @@ import lombok.extern.slf4j.XSlf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,6 +41,21 @@ public class ProductService {
                 .build();
         productRepo.save(product);
         log.info("Product {} is saved", product.getId());
+
+    }
+
+    public List<ProductResponse> viewAllProducts() {
+        List<Product> products = productRepo.findAll();
+       List<ProductResponse> productResponses =  products.parallelStream().map(p->
+             ProductResponse.builder()
+                    .id(p.getId())
+                    .name(p.getName())
+                    .description(p.getDescription())
+                    .price(p.getPrice())
+                    .build()
+        ).collect(Collectors.toList());
+
+        return productResponses;
 
     }
 }
